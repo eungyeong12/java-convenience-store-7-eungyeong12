@@ -1,7 +1,8 @@
 package store.constant;
 
 public enum FileName {
-    PRODUCT_FILE("products.md");
+    PRODUCT_FILE("products.md"),
+    PROMOTION_FILE("promotions.md");
 
     private final String name;
 
