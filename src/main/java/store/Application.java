@@ -1,7 +1,11 @@
 package store;
 
+import store.config.ApplicationConfig;
+import store.controller.ConvenienceStoreController;
+
 public class Application {
     public static void main(String[] args) {
-        // TODO: 프로그램 구현
+        ConvenienceStoreController convenienceStoreController = new ApplicationConfig().convenienceStoreController();
+        convenienceStoreController.run();
     }
 }
