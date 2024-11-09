@@ -18,10 +18,27 @@ public class Products {
 
     public static Products of(List<String> contents) {
         List<Product> products = IntStream.range(1, contents.size())
-                .mapToObj(i -> Delimiter.splitWithDelimiter(contents.get(i)))
+                .mapToObj(i -> Delimiter.splitWithComma(contents.get(i)))
                 .map(Products::convertToProduct)
                 .toList();
         return new Products(products);
+    }
+
+    public List<Product> getProductByName(String name) {
+        return products.stream()
+                .filter(product -> product.getName().equals(name))
+                .toList();
+    }
+
+    public int getProductQuantity(ProductName productName) {
+        return getProductByName(productName.getName()).stream()
+                .mapToInt(Product::getQuantity)
+                .sum();
+    }
+
+    public boolean isExist(ProductName productName) {
+        return products.stream()
+                .anyMatch(product -> product.getName().equals(productName.getName()));
     }
 
     public GeneralProducts getGeneralProducts() {

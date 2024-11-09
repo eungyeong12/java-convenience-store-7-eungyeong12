@@ -19,7 +19,7 @@ public class Promotion {
     }
 
     public static Promotion of(String content) {
-        List<String> tokens = Delimiter.splitWithDelimiter(content);
+        List<String> tokens = Delimiter.splitWithComma(content);
         PromotionName name = PromotionName.of(tokens.get(0));
         Buy buy = Buy.of(tokens.get(1));
         Get get = Get.of(tokens.get(2));
