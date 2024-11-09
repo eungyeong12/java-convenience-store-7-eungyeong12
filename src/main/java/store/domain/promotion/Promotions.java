@@ -11,7 +11,7 @@ public class Promotions {
         this.promotions = new ArrayList<>(promotions);
     }
 
-    public static Promotions of(final List<String> contents) {
+    public static Promotions of(List<String> contents) {
         List<Promotion> promotions = IntStream.range(1, contents.size())
                 .mapToObj(i -> Promotion.of(contents.get(i)))
                 .toList();

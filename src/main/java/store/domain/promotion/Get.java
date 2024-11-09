@@ -1,5 +1,7 @@
 package store.domain.promotion;
 
+import store.validator.Validator;
+
 public class Get {
     private final int count;
 
@@ -7,7 +9,8 @@ public class Get {
         this.count = count;
     }
 
-    public static Get of(final String input) {
+    public static Get of(String input) {
+        Validator.validateNumber(input);
         return new Get(Integer.parseInt(input));
     }
 }

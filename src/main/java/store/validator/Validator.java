@@ -12,10 +12,10 @@ public class Validator {
         }
     }
 
-    public static int validateNumber(String input) {
+    public static void validateNumber(String input) {
         validateBlankValue(input);
         validateNumeric(input);
-        return validateParseInt(input);
+        validateValidNumber(input);
     }
 
     public static void validateBlankValue(String input) {
@@ -30,11 +30,10 @@ public class Validator {
         }
     }
 
-    private static int validateParseInt(String input) {
+    private static void validateValidNumber(String input) {
         try {
             int number = Integer.parseInt(input);
             validateNegativeNumber(number);
-            return number;
         } catch (NumberFormatException e) {
             throw new ValidationException(ValidationErrorMessage.OUT_OF_NUMBER_RANGE, input);
         }

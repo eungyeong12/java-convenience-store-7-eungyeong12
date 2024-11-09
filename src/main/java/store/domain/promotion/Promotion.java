@@ -18,7 +18,7 @@ public class Promotion {
         this.endDate = endDate;
     }
 
-    public static Promotion of(final String content) {
+    public static Promotion of(String content) {
         List<String> tokens = Delimiter.splitWithDelimiter(content);
         PromotionName name = PromotionName.of(tokens.get(0));
         Buy buy = Buy.of(tokens.get(1));
