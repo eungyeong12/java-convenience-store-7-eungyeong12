@@ -3,6 +3,7 @@ package store.controller;
 import java.util.Map.Entry;
 import java.util.function.Supplier;
 import store.constant.FileName;
+import store.domain.product.GeneralProduct;
 import store.domain.product.ProductName;
 import store.domain.product.Products;
 import store.domain.product.PromotionProduct;
@@ -37,8 +38,12 @@ public class ConvenienceStoreController {
             ProductName productName = entry.getKey();
             Quantity quantity = entry.getValue();
             if (promotionProducts.isExist(productName)) {
-                PromotionProduct product = (PromotionProduct) products.getPromotionProducts().getProduct(productName);
+                PromotionProduct product = products.getPromotionProducts().getProduct(productName);
                 Promotion promotion = promotions.getPromotion(product.getPromotion());
+            }
+            if (!promotionProducts.isExist(productName)) {
+                GeneralProduct product = products.getGeneralProducts().getProduct(productName);
+                product.decreaseStock(quantity);
             }
         }
     }

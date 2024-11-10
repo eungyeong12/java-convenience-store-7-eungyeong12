@@ -3,7 +3,7 @@ package store.domain.product;
 import store.validator.Validator;
 
 public class Quantity {
-    private final int quantity;
+    private int quantity;
 
     private Quantity(int quantity) {
         this.quantity = quantity;
@@ -16,5 +16,9 @@ public class Quantity {
 
     public int getQuantity() {
         return quantity;
+    }
+
+    public void decreaseStock(int buyQuantity) {
+        quantity -= buyQuantity;
     }
 }

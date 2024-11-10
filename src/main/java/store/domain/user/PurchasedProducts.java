@@ -1,7 +1,7 @@
 package store.domain.user;
 
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -15,12 +15,12 @@ public class PurchasedProducts {
     private final Map<ProductName, Quantity> products;
 
     private PurchasedProducts(Map<ProductName, Quantity> products) {
-        this.products = new HashMap<>(products);
+        this.products = new LinkedHashMap<>(products);
     }
 
     public static PurchasedProducts of(String input, Products products) {
         List<String> tokens = Delimiter.splitWithComma(input);
-        Map<ProductName, Quantity> purchasedProducts = new HashMap<>();
+        Map<ProductName, Quantity> purchasedProducts = new LinkedHashMap<>();
         for (String token : tokens) {
             token = token.trim();
             if (!token.startsWith("[") || !token.endsWith("]")) {

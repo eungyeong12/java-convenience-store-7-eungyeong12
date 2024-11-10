@@ -16,7 +16,7 @@ public class PromotionProducts {
                 .anyMatch(product -> product.getName().equals(productName.getName()));
     }
 
-    public Product getProduct(ProductName productName) {
+    public PromotionProduct getProduct(ProductName productName) {
         for (PromotionProduct product : products) {
             if (product.getName().equals(productName.getName())) {
                 return product;
