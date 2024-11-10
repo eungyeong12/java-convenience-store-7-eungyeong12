@@ -41,6 +41,9 @@ public class ConvenienceStoreController {
             if (promotionProducts.isExist(productName)) {
                 PromotionProduct product = promotionProducts.getProduct(productName);
                 Promotion promotion = promotions.getPromotion(product.getPromotion());
+                if (promotion.isInvalidPromotion()) {
+                    break;
+                }
                 if (promotion.isBenefitAvailable(product.getQuantity(),
                         purchasedProducts.getProductQuantity(productName))) {
                     String s = getBenefitDecision(product);
@@ -75,7 +78,7 @@ public class ConvenienceStoreController {
 
         boolean isMembershipDiscount = isMembershipDiscount();
 
-        outputView.displayReceipt(products, purchasedProducts, isMembershipDiscount);
+        outputView.displayReceipt(products, promotions, purchasedProducts, isMembershipDiscount);
     }
 
     private Products getProducts() {

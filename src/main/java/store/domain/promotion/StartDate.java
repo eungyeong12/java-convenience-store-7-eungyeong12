@@ -1,13 +1,13 @@
 package store.domain.promotion;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import store.util.DateFormatter;
 import store.validator.Validator;
 
 public class StartDate {
-    private final Date date;
+    private final LocalDateTime date;
 
-    private StartDate(Date date) {
+    private StartDate(LocalDateTime date) {
         this.date = date;
     }
 
@@ -16,7 +16,7 @@ public class StartDate {
         return new StartDate(DateFormatter.parse(input));
     }
 
-    public Date getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 }

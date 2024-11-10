@@ -1,7 +1,6 @@
 package store.domain.promotion;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.IntStream;
 import store.exception.ConvenienceStoreException;
@@ -19,10 +18,6 @@ public class Promotions {
                 .toList();
 
         return new Promotions(promotions);
-    }
-
-    public List<Promotion> getPromotions() {
-        return Collections.unmodifiableList(promotions);
     }
 
     public Promotion getPromotion(String promotionName) {

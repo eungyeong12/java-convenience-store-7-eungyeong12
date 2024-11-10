@@ -1,6 +1,7 @@
 package store.domain.promotion;
 
-import java.util.Date;
+import camp.nextstep.edu.missionutils.DateTimes;
+import java.time.LocalDateTime;
 import java.util.List;
 import store.domain.product.Quantity;
 import store.util.Delimiter;
@@ -30,6 +31,11 @@ public class Promotion {
         return new Promotion(name, buyCount, getCount, startDate, endDate);
     }
 
+    public boolean isInvalidPromotion() {
+        LocalDateTime now = DateTimes.now();
+        return now.isBefore(startDate.getDate()) || now.isAfter(endDate.getDate());
+    }
+
     public boolean isBenefitAvailable(int promotionQuantity, Quantity buyQuantity) {
         if (promotionQuantity >= buyQuantity.getQuantity() + 1) {
             return buyQuantity.getQuantity() % (buyCount.getCount() + getCount.getCount()) == buyCount.getCount();
@@ -39,6 +45,10 @@ public class Promotion {
 
     public int getDiscountNotPossible(Quantity buyQuantity) {
         return buyQuantity.getQuantity() % (buyCount.getCount() + getCount.getCount());
+    }
+
+    public int getPromotionQuantity(int quantity) {
+        return quantity / (buyCount.getCount() + getCount.getCount());
     }
 
     public String getName() {
@@ -53,11 +63,11 @@ public class Promotion {
         return getCount.getCount();
     }
 
-    public Date getStartDate() {
+    public LocalDateTime getStartDate() {
         return startDate.getDate();
     }
 
-    public Date getEndDate() {
+    public LocalDateTime getEndDate() {
         return endDate.getDate();
     }
 }
