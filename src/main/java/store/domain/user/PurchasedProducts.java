@@ -61,7 +61,13 @@ public class PurchasedProducts {
     public void increaseQuantity(ProductName productName) {
         int existed = products.get(productName).getQuantity();
         Quantity newQuantity = Quantity.of(String.valueOf(existed + 1));
-        products.put(productName, newQuantity);
+        products.replace(productName, newQuantity);
+    }
+
+    public void decreaseQuantity(ProductName productName, int discountNotPossible) {
+        int existed = products.get(productName).getQuantity();
+        Quantity newQuantity = Quantity.of(String.valueOf(existed - discountNotPossible));
+        products.replace(productName, newQuantity);
     }
 
     public int getProductQuantity(ProductName productName) {

@@ -6,7 +6,8 @@ public enum ValidationErrorMessage {
     NOT_NUMERIC_VALUE("입력값은 숫자여야 합니다."),
     NEGATIVE_NUMBER_VALUE("입력값은 음수일 수 없습니다."),
     OUT_OF_NUMBER_RANGE("입력값이 너무 크거나 작습니다."),
-    INVALID_DATE_FORMAT("날짜 형식이 올바르지 않습니다.");
+    INVALID_DATE_FORMAT("날짜 형식이 올바르지 않습니다."),
+    NOT_Y_OR_N("Y 또는 N으로 입력해 주세요.");
 
     private final String message;
 

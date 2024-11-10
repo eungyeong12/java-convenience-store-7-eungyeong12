@@ -36,6 +36,10 @@ public class Promotion {
         return false;
     }
 
+    public int getDiscountNotPossible(int buyQuantity) {
+        return buyQuantity % (buyCount.getCount() + getCount.getCount());
+    }
+
     public String getName() {
         return name.getName();
     }

@@ -4,7 +4,7 @@ import store.exception.validation.ValidationErrorMessage;
 import store.exception.validation.ValidationException;
 
 public class Validator {
-    public static final String NUMERIC_PATTERN = "-?\\d+";
+    private static final String NUMERIC_PATTERN = "-?\\d+";
 
     public static void validateBlankInput(String input) {
         if (input == null || input.isBlank()) {
@@ -21,6 +21,12 @@ public class Validator {
     public static void validateBlankValue(String input) {
         if (input == null || input.isBlank()) {
             throw new ValidationException(ValidationErrorMessage.BLANK_VALUE);
+        }
+    }
+
+    public static void validateInputYOrN(String input) {
+        if (!(input.equalsIgnoreCase("Y") || input.equalsIgnoreCase("N"))) {
+            throw new ValidationException(ValidationErrorMessage.NOT_Y_OR_N);
         }
     }
 

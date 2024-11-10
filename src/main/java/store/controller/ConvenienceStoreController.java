@@ -45,7 +45,15 @@ public class ConvenienceStoreController {
                     String s = getBenefitDecision(product);
                     if (s.equalsIgnoreCase("Y")) {
                         purchasedProducts.increaseQuantity(productName);
-                        System.out.println(purchasedProducts.getProductQuantity(productName));
+                    }
+                }
+
+                int discountNotPossible = promotion.getDiscountNotPossible(
+                        purchasedProducts.getProductQuantity(productName));
+                if (discountNotPossible > 0) {
+                    String s = getDiscountDecision(product, discountNotPossible);
+                    if (s.equalsIgnoreCase("N")) {
+                        purchasedProducts.decreaseQuantity(productName, discountNotPossible);
                     }
                 }
             }
@@ -70,6 +78,10 @@ public class ConvenienceStoreController {
 
     private String getBenefitDecision(PromotionProduct product) {
         return executeWithRetry(() -> inputView.getBenefitDecision(product));
+    }
+
+    private String getDiscountDecision(PromotionProduct product, int discountNotPossible) {
+        return executeWithRetry(() -> inputView.getDiscountDecision(product, discountNotPossible));
     }
 
     private <T> T executeWithRetry(Supplier<T> supplier) {
