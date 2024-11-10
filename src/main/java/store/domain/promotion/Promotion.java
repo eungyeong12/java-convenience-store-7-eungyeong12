@@ -29,6 +29,13 @@ public class Promotion {
         return new Promotion(name, buyCount, getCount, startDate, endDate);
     }
 
+    public boolean isBenefitAvailable(int promotionQuantity, int buyQuantity) {
+        if (promotionQuantity >= buyQuantity + 1) {
+            return buyQuantity % (buyCount.getCount() + getCount.getCount()) == buyCount.getCount();
+        }
+        return false;
+    }
+
     public String getName() {
         return name.getName();
     }

@@ -38,15 +38,14 @@ public class ConvenienceStoreController {
             ProductName productName = entry.getKey();
             Quantity quantity = entry.getValue();
             if (promotionProducts.isExist(productName)) {
-                PromotionProduct product = products.getPromotionProducts().getProduct(productName);
+                PromotionProduct product = promotionProducts.getProduct(productName);
                 Promotion promotion = promotions.getPromotion(product.getPromotion());
-                int buy = promotion.getBuyCount();
-                int get = promotion.getGetCount();
-                int buyQuantity = purchasedProducts.getProducts().get(productName).getQuantity();
-                if (buyQuantity % (buy + get) == buy) {
+                if (promotion.isBenefitAvailable(product.getQuantity(),
+                        purchasedProducts.getProductQuantity(productName))) {
                     String s = getBenefitDecision(product);
                     if (s.equalsIgnoreCase("Y")) {
                         purchasedProducts.increaseQuantity(productName);
+                        System.out.println(purchasedProducts.getProductQuantity(productName));
                     }
                 }
             }

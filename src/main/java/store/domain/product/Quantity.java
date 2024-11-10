@@ -14,11 +14,11 @@ public class Quantity {
         return new Quantity(Integer.parseInt(input));
     }
 
-    public int getQuantity() {
-        return quantity;
-    }
-
     public void decreaseStock(int buyQuantity) {
         quantity -= buyQuantity;
+    }
+
+    public int getQuantity() {
+        return quantity;
     }
 }

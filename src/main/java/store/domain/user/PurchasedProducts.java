@@ -63,4 +63,8 @@ public class PurchasedProducts {
         Quantity newQuantity = Quantity.of(String.valueOf(existed + 1));
         products.put(productName, newQuantity);
     }
+
+    public int getProductQuantity(ProductName productName) {
+        return products.get(productName).getQuantity();
+    }
 }
