@@ -11,8 +11,8 @@ public class Product {
         this.quantity = quantity;
     }
 
-    public void decreaseStock(Quantity buyQuantity) {
-        quantity.decreaseStock(buyQuantity.getQuantity());
+    public void decreaseStock(int buyQuantity) {
+        quantity.decreaseStock(buyQuantity);
     }
 
     public String getName() {

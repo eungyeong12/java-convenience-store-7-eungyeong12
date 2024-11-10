@@ -13,7 +13,7 @@ public class OutputView {
     }
 
     public void displayProducts(Products products) {
-        System.out.println(WELCOME_MESSAGE + System.lineSeparator() + PRODUCT_GUIDE_MESSAGE);
+        System.out.println(System.lineSeparator() + WELCOME_MESSAGE + System.lineSeparator() + PRODUCT_GUIDE_MESSAGE);
         productView.displayProducts(products);
     }
 }

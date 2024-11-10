@@ -12,7 +12,7 @@ public class ProductView {
     private static final String QUANTITY_RESULT = "%,d개 ";
 
     public void displayProducts(Products products) {
-        System.out.println(System.lineSeparator() + getProducts(products));
+        System.out.println(getProducts(products));
     }
 
     private String getProducts(Products products) {
@@ -24,14 +24,14 @@ public class ProductView {
     }
 
     private String getProduct(Products products, Product product) {
-        StringBuilder result = new StringBuilder(DASH);
+        StringBuilder result = new StringBuilder(System.lineSeparator() + DASH);
         if (product instanceof PromotionProduct) {
             result.append(getPromotionProduct(products, product));
         }
         if (product instanceof GeneralProduct) {
             result.append(getGeneralProduct(product));
         }
-        return result.append(System.lineSeparator()).toString();
+        return result.toString();
     }
 
     private String getGeneralProduct(Product product) {

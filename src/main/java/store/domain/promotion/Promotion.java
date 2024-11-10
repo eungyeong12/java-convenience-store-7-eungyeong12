@@ -2,6 +2,7 @@ package store.domain.promotion;
 
 import java.util.Date;
 import java.util.List;
+import store.domain.product.Quantity;
 import store.util.Delimiter;
 
 public class Promotion {
@@ -29,15 +30,15 @@ public class Promotion {
         return new Promotion(name, buyCount, getCount, startDate, endDate);
     }
 
-    public boolean isBenefitAvailable(int promotionQuantity, int buyQuantity) {
-        if (promotionQuantity >= buyQuantity + 1) {
-            return buyQuantity % (buyCount.getCount() + getCount.getCount()) == buyCount.getCount();
+    public boolean isBenefitAvailable(int promotionQuantity, Quantity buyQuantity) {
+        if (promotionQuantity >= buyQuantity.getQuantity() + 1) {
+            return buyQuantity.getQuantity() % (buyCount.getCount() + getCount.getCount()) == buyCount.getCount();
         }
         return false;
     }
 
-    public int getDiscountNotPossible(int buyQuantity) {
-        return buyQuantity % (buyCount.getCount() + getCount.getCount());
+    public int getDiscountNotPossible(Quantity buyQuantity) {
+        return buyQuantity.getQuantity() % (buyCount.getCount() + getCount.getCount());
     }
 
     public String getName() {

@@ -37,6 +37,7 @@ public class ConvenienceStoreController {
         for (Entry<ProductName, Quantity> entry : purchasedProducts.getProducts().entrySet()) {
             ProductName productName = entry.getKey();
             Quantity quantity = entry.getValue();
+            int stock = quantity.getQuantity();
             if (promotionProducts.isExist(productName)) {
                 PromotionProduct product = promotionProducts.getProduct(productName);
                 Promotion promotion = promotions.getPromotion(product.getPromotion());
@@ -45,6 +46,7 @@ public class ConvenienceStoreController {
                     String s = getBenefitDecision(product);
                     if (s.equalsIgnoreCase("Y")) {
                         purchasedProducts.increaseQuantity(productName);
+                        stock += 1;
                     }
                 }
 
@@ -52,15 +54,24 @@ public class ConvenienceStoreController {
                         purchasedProducts.getProductQuantity(productName));
                 if (discountNotPossible > 0) {
                     String s = getDiscountDecision(product, discountNotPossible);
+                    if (s.equalsIgnoreCase("Y")) {
+                        stock -= discountNotPossible;
+                        GeneralProduct generalProduct = products.getGeneralProducts().getProduct(productName);
+                        generalProduct.decreaseStock(discountNotPossible);
+                    }
                     if (s.equalsIgnoreCase("N")) {
+                        stock -= discountNotPossible;
                         purchasedProducts.decreaseQuantity(productName, discountNotPossible);
                     }
                 }
+                product.decreaseStock(stock);
             }
+
             if (!promotionProducts.isExist(productName)) {
                 GeneralProduct product = products.getGeneralProducts().getProduct(productName);
-                product.decreaseStock(quantity);
+                product.decreaseStock(quantity.getQuantity());
             }
+            outputView.displayProducts(products);
         }
     }
 

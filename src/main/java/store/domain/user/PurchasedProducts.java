@@ -70,7 +70,7 @@ public class PurchasedProducts {
         products.replace(productName, newQuantity);
     }
 
-    public int getProductQuantity(ProductName productName) {
-        return products.get(productName).getQuantity();
+    public Quantity getProductQuantity(ProductName productName) {
+        return products.get(productName);
     }
 }
