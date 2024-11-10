@@ -71,10 +71,11 @@ public class ConvenienceStoreController {
                 GeneralProduct product = products.getGeneralProducts().getProduct(productName);
                 product.decreaseStock(quantity.getQuantity());
             }
-            outputView.displayProducts(products);
         }
 
         boolean isMembershipDiscount = isMembershipDiscount();
+
+        outputView.displayReceipt(products, purchasedProducts, isMembershipDiscount);
     }
 
     private Products getProducts() {

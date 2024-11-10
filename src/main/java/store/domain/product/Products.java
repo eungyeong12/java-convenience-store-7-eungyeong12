@@ -57,6 +57,10 @@ public class Products {
         return new PromotionProducts(promotionProducts);
     }
 
+    public int getProductPrice(ProductName productName) {
+        return getGeneralProducts().getProduct(productName).getPrice();
+    }
+
     private static Product convertToProduct(List<String> tokens) {
         ProductName name = ProductName.of(tokens.get(0));
         Price price = Price.of(tokens.get(1));

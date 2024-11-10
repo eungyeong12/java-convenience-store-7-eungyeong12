@@ -4,6 +4,7 @@ import store.controller.ConvenienceStoreController;
 import store.view.inputView.InputView;
 import store.view.outputView.OutputView;
 import store.view.outputView.ProductView;
+import store.view.outputView.ReceiptView;
 
 public class ApplicationConfig {
 
@@ -12,6 +13,6 @@ public class ApplicationConfig {
     }
 
     public OutputView outputView() {
-        return new OutputView(new ProductView());
+        return new OutputView(new ProductView(), new ReceiptView());
     }
 }
