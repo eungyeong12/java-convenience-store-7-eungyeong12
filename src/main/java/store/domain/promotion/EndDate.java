@@ -15,4 +15,8 @@ public class EndDate {
         Validator.validateBlankValue(input);
         return new EndDate(DateFormatter.parse(input));
     }
+
+    public Date getDate() {
+        return date;
+    }
 }

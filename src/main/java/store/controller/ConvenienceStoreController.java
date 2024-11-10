@@ -1,8 +1,14 @@
 package store.controller;
 
+import java.util.Map.Entry;
 import java.util.function.Supplier;
 import store.constant.FileName;
+import store.domain.product.ProductName;
 import store.domain.product.Products;
+import store.domain.product.PromotionProduct;
+import store.domain.product.PromotionProducts;
+import store.domain.product.Quantity;
+import store.domain.promotion.Promotion;
 import store.domain.promotion.Promotions;
 import store.domain.user.PurchasedProducts;
 import store.exception.ConvenienceStoreException;
@@ -25,6 +31,16 @@ public class ConvenienceStoreController {
         outputView.displayProducts(products);
 
         PurchasedProducts purchasedProducts = getPurchasedProducts(products);
+
+        PromotionProducts promotionProducts = products.getPromotionProducts();
+        for (Entry<ProductName, Quantity> entry : purchasedProducts.getProducts().entrySet()) {
+            ProductName productName = entry.getKey();
+            Quantity quantity = entry.getValue();
+            if (promotionProducts.isExist(productName)) {
+                PromotionProduct product = (PromotionProduct) products.getPromotionProducts().getProduct(productName);
+                Promotion promotion = promotions.getPromotion(product.getPromotion());
+            }
+        }
     }
 
     private Products getProducts() {
