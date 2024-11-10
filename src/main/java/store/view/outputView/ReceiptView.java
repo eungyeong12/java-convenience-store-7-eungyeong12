@@ -52,6 +52,7 @@ public class ReceiptView {
         PromotionProducts promotionProducts = products.getPromotionProducts();
         for (Entry<ProductName, Quantity> entry : purchasedProducts.getProducts().entrySet()) {
             ProductName name = entry.getKey();
+            int quantity = entry.getValue().getQuantity();
             if (!promotionProducts.isExist(name)) {
                 continue;
             }
@@ -59,10 +60,13 @@ public class ReceiptView {
                     .isInvalidPromotion()) {
                 continue;
             }
-            int quantity = entry.getValue().getQuantity();
-            int promotionQuantity = promotions.getPromotion(
-                            products.getPromotionProducts().getProduct(name).getPromotion())
-                    .getPromotionQuantity(quantity);
+            PromotionProduct product = promotionProducts.getProduct(name);
+            Promotion promotion = promotions.getPromotion(product.getPromotion());
+
+            int promotionQuantity = promotion.getPromotionQuantity(quantity);
+            if (quantity > products.getProductQuantity(name)) {
+                promotionQuantity = promotion.getPromotionQuantity(products.getProductQuantity(name));
+            }
             result.append(String.format(FREE_GIFT + System.lineSeparator(), name.getName(), promotionQuantity));
         }
         System.out.print(result);
@@ -112,9 +116,13 @@ public class ReceiptView {
                 continue;
             }
             int quantity = entry.getValue().getQuantity();
-            int promotionQuantity = promotions.getPromotion(
-                            products.getPromotionProducts().getProduct(name).getPromotion())
-                    .getPromotionQuantity(quantity);
+            PromotionProduct product = promotionProducts.getProduct(name);
+            Promotion promotion = promotions.getPromotion(product.getPromotion());
+
+            int promotionQuantity = promotion.getPromotionQuantity(quantity);
+            if (quantity > products.getProductQuantity(name)) {
+                promotionQuantity = promotion.getPromotionQuantity(products.getProductQuantity(name));
+            }
             price += promotionQuantity * products.getProductPrice(name);
         }
         return price;
@@ -129,8 +137,13 @@ public class ReceiptView {
             if (promotionProducts.isExist(productName)) {
                 PromotionProduct product = promotionProducts.getProduct(productName);
                 Promotion promotion = promotions.getPromotion(product.getPromotion());
+
                 int notPromotionQuantity = promotion.getDiscountNotPossible(
                         purchasedProducts.getProductQuantity(productName));
+                if (product.getQuantity() < purchasedProducts.getProductQuantity(productName).getQuantity()) {
+                    notPromotionQuantity += purchasedProducts.getProductQuantity(productName).getQuantity()
+                            - product.getQuantity();
+                }
                 notPromotionPrice += notPromotionQuantity * products.getProductPrice(productName);
             }
 

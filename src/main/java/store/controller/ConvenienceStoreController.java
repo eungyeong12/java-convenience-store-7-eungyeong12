@@ -29,6 +29,12 @@ public class ConvenienceStoreController {
     public void run() {
         Products products = getProducts();
         Promotions promotions = getPromotions();
+        do {
+            start(products, promotions);
+        } while (isAdditionalPurchase());
+    }
+
+    private void start(Products products, Promotions promotions) {
         outputView.displayProducts(products);
 
         PurchasedProducts purchasedProducts = getPurchasedProducts(products);
@@ -52,9 +58,12 @@ public class ConvenienceStoreController {
                         stock += 1;
                     }
                 }
-
                 int discountNotPossible = promotion.getDiscountNotPossible(
                         purchasedProducts.getProductQuantity(productName));
+                if (product.getQuantity() < purchasedProducts.getProductQuantity(productName).getQuantity()) {
+                    discountNotPossible += purchasedProducts.getProductQuantity(productName).getQuantity()
+                            - product.getQuantity();
+                }
                 if (discountNotPossible > 0) {
                     String s = getDiscountDecision(product, discountNotPossible);
                     if (s.equalsIgnoreCase("Y")) {
@@ -103,6 +112,10 @@ public class ConvenienceStoreController {
 
     private boolean isMembershipDiscount() {
         return executeWithRetry(inputView::isMembershipDiscount);
+    }
+
+    private boolean isAdditionalPurchase() {
+        return executeWithRetry(inputView::isAdditionalPurchase);
     }
 
     private <T> T executeWithRetry(Supplier<T> supplier) {
