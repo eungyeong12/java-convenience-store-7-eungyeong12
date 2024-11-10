@@ -73,6 +73,8 @@ public class ConvenienceStoreController {
             }
             outputView.displayProducts(products);
         }
+
+        boolean isMembershipDiscount = isMembershipDiscount();
     }
 
     private Products getProducts() {
@@ -93,6 +95,10 @@ public class ConvenienceStoreController {
 
     private String getDiscountDecision(PromotionProduct product, int discountNotPossible) {
         return executeWithRetry(() -> inputView.getDiscountDecision(product, discountNotPossible));
+    }
+
+    private boolean isMembershipDiscount() {
+        return executeWithRetry(inputView::isMembershipDiscount);
     }
 
     private <T> T executeWithRetry(Supplier<T> supplier) {
