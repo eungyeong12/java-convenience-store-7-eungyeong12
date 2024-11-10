@@ -57,4 +57,10 @@ public class PurchasedProducts {
     public Map<ProductName, Quantity> getProducts() {
         return Collections.unmodifiableMap(products);
     }
+
+    public void increaseQuantity(ProductName productName) {
+        int existed = products.get(productName).getQuantity();
+        Quantity newQuantity = Quantity.of(String.valueOf(existed + 1));
+        products.put(productName, newQuantity);
+    }
 }

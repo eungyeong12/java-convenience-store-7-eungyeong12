@@ -40,6 +40,15 @@ public class ConvenienceStoreController {
             if (promotionProducts.isExist(productName)) {
                 PromotionProduct product = products.getPromotionProducts().getProduct(productName);
                 Promotion promotion = promotions.getPromotion(product.getPromotion());
+                int buy = promotion.getBuyCount();
+                int get = promotion.getGetCount();
+                int buyQuantity = purchasedProducts.getProducts().get(productName).getQuantity();
+                if (buyQuantity % (buy + get) == buy) {
+                    String s = getBenefitDecision(product);
+                    if (s.equalsIgnoreCase("Y")) {
+                        purchasedProducts.increaseQuantity(productName);
+                    }
+                }
             }
             if (!promotionProducts.isExist(productName)) {
                 GeneralProduct product = products.getGeneralProducts().getProduct(productName);
@@ -58,6 +67,10 @@ public class ConvenienceStoreController {
 
     private PurchasedProducts getPurchasedProducts(Products products) {
         return executeWithRetry(() -> PurchasedProducts.of(inputView.getProductAndQuantity(), products));
+    }
+
+    private String getBenefitDecision(PromotionProduct product) {
+        return executeWithRetry(() -> inputView.getBenefitDecision(product));
     }
 
     private <T> T executeWithRetry(Supplier<T> supplier) {
