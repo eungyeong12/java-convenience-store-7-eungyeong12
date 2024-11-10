@@ -57,10 +57,6 @@ public class Products {
         return new PromotionProducts(promotionProducts);
     }
 
-    public int getProductPrice(ProductName productName) {
-        return getGeneralProducts().getProduct(productName).getPrice();
-    }
-
     private static Product convertToProduct(List<String> tokens) {
         ProductName name = ProductName.of(tokens.get(0));
         Price price = Price.of(tokens.get(1));
@@ -78,5 +74,14 @@ public class Products {
 
     public List<Product> getProducts() {
         return Collections.unmodifiableList(products);
+    }
+
+    public int getProductPrice(ProductName name) {
+        for (Product product : getProducts()) {
+            if (product.getName().equals(name.getName())) {
+                return product.getPrice();
+            }
+        }
+        return 0;
     }
 }

@@ -54,20 +54,4 @@ public class Promotion {
     public String getName() {
         return name.getName();
     }
-
-    public int getBuyCount() {
-        return buyCount.getCount();
-    }
-
-    public int getGetCount() {
-        return getCount.getCount();
-    }
-
-    public LocalDateTime getStartDate() {
-        return startDate.getDate();
-    }
-
-    public LocalDateTime getEndDate() {
-        return endDate.getDate();
-    }
 }
