@@ -16,7 +16,7 @@ public class StartDate {
         return new StartDate(DateFormatter.parse(input));
     }
 
-    public LocalDateTime getDate() {
-        return date;
+    public boolean isAfter(LocalDateTime now) {
+        return date.isAfter(now);
     }
 }

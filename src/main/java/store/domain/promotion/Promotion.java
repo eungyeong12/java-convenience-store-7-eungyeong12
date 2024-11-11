@@ -3,6 +3,7 @@ package store.domain.promotion;
 import camp.nextstep.edu.missionutils.DateTimes;
 import java.time.LocalDateTime;
 import java.util.List;
+import store.domain.product.PromotionProduct;
 import store.domain.product.Quantity;
 import store.util.Delimiter;
 
@@ -33,7 +34,7 @@ public class Promotion {
 
     public boolean isInvalidPromotion() {
         LocalDateTime now = DateTimes.now();
-        return now.isBefore(startDate.getDate()) || now.isAfter(endDate.getDate());
+        return startDate.isAfter(now) || endDate.isBefore(now);
     }
 
     public boolean isBenefitAvailable(int promotionQuantity, Quantity buyQuantity) {
@@ -43,15 +44,30 @@ public class Promotion {
         return false;
     }
 
-    public int getDiscountNotPossible(Quantity buyQuantity) {
-        return buyQuantity.getQuantity() % (buyCount.getCount() + getCount.getCount());
+    public int getPromotionNotPossible(Quantity purchaseQuantity, PromotionProduct promotionProduct) {
+        int buyQuantity = purchaseQuantity.getQuantity();
+        int promotionProductQuantity = promotionProduct.getQuantity();
+        int promotionQuantity = getPromotionQuantity(buyQuantity, promotionProductQuantity);
+        promotionQuantity *= (getBuyCount() + getGetCount());
+        return buyQuantity - promotionQuantity;
     }
 
-    public int getPromotionQuantity(int quantity) {
-        return quantity / (buyCount.getCount() + getCount.getCount());
+    public int getPromotionQuantity(int purchaseQuantity, int promotionProductQuantity) {
+        if (purchaseQuantity > promotionProductQuantity) {
+            return promotionProductQuantity / (getBuyCount() + getGetCount());
+        }
+        return purchaseQuantity / (getBuyCount() + getGetCount());
     }
 
     public String getName() {
         return name.getName();
+    }
+
+    public int getBuyCount() {
+        return buyCount.getCount();
+    }
+
+    public int getGetCount() {
+        return getCount.getCount();
     }
 }

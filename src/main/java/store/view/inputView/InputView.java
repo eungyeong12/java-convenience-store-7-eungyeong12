@@ -14,32 +14,38 @@ public class InputView {
 
     public String getProductAndQuantity() {
         System.out.println(System.lineSeparator() + PRODUCT_AND_QUANTITY_INPUT_MESSAGE);
-        return Console.readLine().trim();
+        return getInput();
     }
 
     public String getBenefitDecision(Product product) {
         System.out.printf(System.lineSeparator() + BENEFIT_GUIDE_MESSAGE + System.lineSeparator(),
                 product.getName());
-        return getInput();
+        return getYOrNInput();
     }
 
     public String getDiscountDecision(PromotionProduct product, int discountNotPossible) {
         System.out.printf(System.lineSeparator() + DISCOUNT_GUIDE_MESSAGE + System.lineSeparator(),
                 product.getName(), discountNotPossible);
-        return getInput();
+        return getYOrNInput();
     }
 
     public boolean isMembershipDiscount() {
         System.out.println(System.lineSeparator() + MEMBERSHIP_GUIDE_MESSAGE);
-        return getInput().equalsIgnoreCase("Y");
+        return getYOrNInput().equalsIgnoreCase("Y");
     }
 
     public boolean isAdditionalPurchase() {
         System.out.println(System.lineSeparator() + ADDITIONAL_PURCHASE_GUIDE_MESSAGE);
-        return getInput().equalsIgnoreCase("Y");
+        return getYOrNInput().equalsIgnoreCase("Y");
     }
 
     private String getInput() {
+        String input = Console.readLine().trim();
+        Validator.validateBlankInput(input);
+        return input;
+    }
+
+    private String getYOrNInput() {
         String input = Console.readLine().trim();
         Validator.validateInputYOrN(input);
         return input;

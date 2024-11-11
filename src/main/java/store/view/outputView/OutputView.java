@@ -2,7 +2,7 @@ package store.view.outputView;
 
 import store.domain.product.Products;
 import store.domain.promotion.Promotions;
-import store.domain.user.PurchasedProducts;
+import store.domain.user.Receipt;
 
 public class OutputView {
     private static final String WELCOME_MESSAGE = "안녕하세요. w편의점입니다.";
@@ -21,8 +21,8 @@ public class OutputView {
         productView.displayProducts(products);
     }
 
-    public void displayReceipt(Products products, Promotions promotions, PurchasedProducts purchasedProducts,
-                               boolean isMembershipDiscount) {
-        receiptView.displayReceipt(products, promotions, purchasedProducts, isMembershipDiscount);
+    public void displayReceipt(Products products, Promotions promotions,
+                               boolean isMembershipDiscount, Receipt receipt) {
+        receiptView.displayReceipt(products, promotions, isMembershipDiscount, receipt);
     }
 }

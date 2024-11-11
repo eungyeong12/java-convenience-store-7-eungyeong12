@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.IntStream;
 import store.domain.promotion.PromotionName;
+import store.exception.product.ProductErrorMessage;
+import store.exception.product.ProductException;
 import store.util.Delimiter;
 
 public class Products {
@@ -76,12 +78,12 @@ public class Products {
         return Collections.unmodifiableList(products);
     }
 
-    public int getProductPrice(ProductName name) {
+    public int getProductPrice(ProductName productName) {
         for (Product product : getProducts()) {
-            if (product.getName().equals(name.getName())) {
+            if (product.getName().equals(productName.getName())) {
                 return product.getPrice();
             }
         }
-        return 0;
+        throw new ProductException(ProductErrorMessage.NOT_EXIST_PRODUCT, productName.getName());
     }
 }

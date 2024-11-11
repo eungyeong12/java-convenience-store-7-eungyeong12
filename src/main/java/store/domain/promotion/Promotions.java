@@ -3,7 +3,8 @@ package store.domain.promotion;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
-import store.exception.ConvenienceStoreException;
+import store.exception.promotion.PromotionErrorMessage;
+import store.exception.promotion.PromotionException;
 
 public class Promotions {
     private final List<Promotion> promotions;
@@ -26,6 +27,6 @@ public class Promotions {
                 return promotion;
             }
         }
-        throw new ConvenienceStoreException("프로모션 없음");
+        throw new PromotionException(PromotionErrorMessage.NOT_EXIST_PROMOTION, promotionName);
     }
 }

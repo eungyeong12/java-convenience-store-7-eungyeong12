@@ -16,7 +16,7 @@ public class EndDate {
         return new EndDate(DateFormatter.parse(input));
     }
 
-    public LocalDateTime getDate() {
-        return date;
+    public boolean isBefore(LocalDateTime now) {
+        return date.isBefore(now);
     }
 }

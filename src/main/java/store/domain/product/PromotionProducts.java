@@ -2,7 +2,8 @@ package store.domain.product;
 
 import java.util.ArrayList;
 import java.util.List;
-import store.exception.ConvenienceStoreException;
+import store.exception.product.ProductErrorMessage;
+import store.exception.product.ProductException;
 
 public class PromotionProducts {
     private final List<PromotionProduct> products;
@@ -22,6 +23,6 @@ public class PromotionProducts {
                 return product;
             }
         }
-        throw new ConvenienceStoreException("프로모션 상품 없음");
+        throw new ProductException(ProductErrorMessage.NOT_EXIST_PRODUCT, productName.getName());
     }
 }

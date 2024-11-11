@@ -5,7 +5,7 @@ import store.validator.Validator;
 public class Quantity {
     private int quantity;
 
-    private Quantity(int quantity) {
+    public Quantity(int quantity) {
         this.quantity = quantity;
     }
 
