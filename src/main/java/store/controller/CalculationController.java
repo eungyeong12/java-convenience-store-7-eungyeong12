@@ -53,9 +53,9 @@ public class CalculationController {
     }
 
     private int getPromotionNotPossible(ProductName productName) {
-        Promotion promotion = promotions.getPromotion(productName.getName());
-        Quantity purchaseQuantity = purchasedProducts.getProductQuantity(productName);
         PromotionProduct promotionProduct = products.getPromotionProducts().getProduct(productName);
+        Promotion promotion = promotions.getPromotion(promotionProduct.getPromotion());
+        Quantity purchaseQuantity = purchasedProducts.getProductQuantity(productName);
         return promotion.getPromotionNotPossible(purchaseQuantity, promotionProduct);
     }
 
@@ -70,18 +70,18 @@ public class CalculationController {
     }
 
     private void checkPromotionConditions(Quantity quantity, ProductName productName, int stock) {
-        stock += checkIsBenefitAvailable(productName, stock);
-        stock += checkHasPromotionNotPossible(productName, stock);
+        stock = checkIsBenefitAvailable(productName, stock);
+        stock = checkHasPromotionNotPossible(productName, stock);
         calculatorService.calculatePromotionQuantity(quantity, productName, stock);
     }
 
     private int checkIsBenefitAvailable(ProductName productName, int stock) {
-        Promotion promotion = promotions.getPromotion(productName.getName());
         PromotionProduct promotionProduct = products.getPromotionProducts().getProduct(productName);
+        Promotion promotion = promotions.getPromotion(promotionProduct.getPromotion());
         Quantity purchaseQuantity = purchasedProducts.getProductQuantity(productName);
         if (promotion.isBenefitAvailable(promotionProduct.getQuantity(), purchaseQuantity)) {
             String input = getBenefitDecision(promotionProduct);
-            stock += calculatorService.processBenefitAvailableProduct(input, stock, productName);
+            stock = calculatorService.processBenefitAvailableProduct(input, stock, productName);
         }
         return stock;
     }
@@ -91,7 +91,7 @@ public class CalculationController {
         int promotionNotPossible = getPromotionNotPossible(productName);
         if (promotionNotPossible > 0) {
             String input = getDiscountDecision(promotionProduct, promotionNotPossible);
-            stock += calculatorService.processPromotionNotPossibleProduct(input, stock, promotionNotPossible,
+            stock = calculatorService.processPromotionNotPossibleProduct(input, stock, promotionNotPossible,
                     productName);
         }
         return stock;

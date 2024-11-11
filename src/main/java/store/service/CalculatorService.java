@@ -38,8 +38,8 @@ public class CalculatorService {
     }
 
     public void calculatePromotionQuantity(Quantity quantity, ProductName productName, int stock) {
-        Promotion promotion = promotions.getPromotion(productName.getName());
         PromotionProduct promotionProduct = products.getPromotionProducts().getProduct(productName);
+        Promotion promotion = promotions.getPromotion(promotionProduct.getPromotion());
         int promotionQuantity = promotion.getPromotionQuantity(quantity.getQuantity(),
                 promotionProduct.getQuantity());
         freeGiftProducts.increaseQuantity(productName, Quantity.of(String.valueOf(promotionQuantity)));

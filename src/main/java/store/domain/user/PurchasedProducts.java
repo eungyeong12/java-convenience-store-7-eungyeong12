@@ -112,10 +112,6 @@ public class PurchasedProducts {
                 .sum();
     }
 
-    public Map<ProductName, Quantity> getProducts() {
-        return Collections.unmodifiableMap(products);
-    }
-
     public int getTotalPrice(Products productInventory) {
         int price = 0;
         for (Entry<ProductName, Quantity> entry : products.entrySet()) {
@@ -124,5 +120,9 @@ public class PurchasedProducts {
             price += productInventory.getProductPrice(name) * quantity;
         }
         return price;
+    }
+
+    public Map<ProductName, Quantity> getProducts() {
+        return Collections.unmodifiableMap(products);
     }
 }
