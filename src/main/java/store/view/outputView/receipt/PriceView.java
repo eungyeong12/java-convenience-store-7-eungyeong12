@@ -1,13 +1,15 @@
 package store.view.outputView.receipt;
 
+import static store.controller.ConvenienceStoreController.products;
+import static store.controller.ConvenienceStoreController.promotions;
+import static store.controller.ConvenienceStoreController.purchasedProducts;
+
 import java.util.Map.Entry;
 import store.domain.product.ProductName;
-import store.domain.product.Products;
 import store.domain.product.PromotionProduct;
 import store.domain.product.PromotionProducts;
 import store.domain.product.Quantity;
 import store.domain.promotion.Promotion;
-import store.domain.promotion.Promotions;
 import store.domain.user.PurchasedProducts;
 import store.domain.user.Receipt;
 
@@ -23,11 +25,10 @@ public class PriceView {
     private static final int DISCOUNT_RATE = 30;
     private static final int MAX_MEMBERSHIP_DISCOUNT_PRICE = 8000;
 
-    public void displayPrice(Products products, Promotions promotions, boolean isMembershipDiscount, Receipt receipt) {
-        int totalPrice = receipt.getTotalPrice(products);
-        int notPromotionPrice = getNotPromotionPrice(products, products.getPromotionProducts(), promotions,
-                receipt.getPurchasedProducts());
-        int promotionDiscount = receipt.getTotalFreeGiftPrice(products);
+    public void displayPrice(boolean isMembershipDiscount, Receipt receipt) {
+        int totalPrice = receipt.getTotalPrice();
+        int notPromotionPrice = getNotPromotionPrice(receipt.getPurchasedProducts());
+        int promotionDiscount = receipt.getTotalFreeGiftPrice();
         int membershipDiscount = getMembershipDiscount(isMembershipDiscount, notPromotionPrice);
         int result = getResultPrice(totalPrice, promotionDiscount, membershipDiscount);
         System.out.printf(TOTAL_PRICE + System.lineSeparator(), TOTAL, receipt.getTotalQuantity(), totalPrice);
@@ -36,25 +37,20 @@ public class PriceView {
         System.out.printf(RESULT_PRICE + System.lineSeparator(), RESULT, result);
     }
 
-    private int getNotPromotionPrice(Products products, PromotionProducts promotionProducts, Promotions promotions,
-                                     PurchasedProducts purchasedProducts) {
+    private int getNotPromotionPrice(PurchasedProducts purchasedProducts) {
         int notPromotionPrice = 0;
         for (Entry<ProductName, Quantity> entry : purchasedProducts.getProducts().entrySet()) {
             ProductName productName = entry.getKey();
             Quantity quantity = entry.getValue();
-            notPromotionPrice += calculateNotPromotionPrice(productName, quantity, promotionProducts,
-                    purchasedProducts, promotions, products, notPromotionPrice);
+            notPromotionPrice += calculateNotPromotionPrice(productName, quantity, notPromotionPrice);
         }
         return notPromotionPrice;
     }
 
-    private int calculateNotPromotionPrice(ProductName productName, Quantity quantity,
-                                           PromotionProducts promotionProducts,
-                                           PurchasedProducts purchasedProducts, Promotions promotions,
-                                           Products products, int notPromotionPrice) {
+    private int calculateNotPromotionPrice(ProductName productName, Quantity quantity, int notPromotionPrice) {
+        PromotionProducts promotionProducts = products.getPromotionProducts();
         if (promotionProducts.isExist(productName)) {
-            notPromotionPrice += calculatePromotionProduct(purchasedProducts, promotionProducts, promotions,
-                    productName, products);
+            notPromotionPrice += calculatePromotionProduct(productName);
         }
         if (!promotionProducts.isExist(productName)) {
             notPromotionPrice += quantity.getQuantity() * products.getProductPrice(productName);
@@ -62,10 +58,8 @@ public class PriceView {
         return notPromotionPrice;
     }
 
-    private int calculatePromotionProduct(PurchasedProducts purchasedProducts, PromotionProducts promotionProducts,
-                                          Promotions promotions, ProductName productName,
-                                          Products products) {
-        PromotionProduct product = promotionProducts.getProduct(productName);
+    private int calculatePromotionProduct(ProductName productName) {
+        PromotionProduct product = products.getPromotionProducts().getProduct(productName);
         Promotion promotion = promotions.getPromotion(product.getPromotion());
         int notPromotionQuantity = promotion.getPromotionNotPossible(
                 purchasedProducts.getProductQuantity(productName), product);

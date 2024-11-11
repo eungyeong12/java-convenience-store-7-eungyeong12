@@ -38,9 +38,9 @@ public class CalculationController {
             calculateProduct(entry);
         }
 
-        Receipt receipt = new Receipt(purchasedProducts, freeGiftProducts);
         boolean isMembershipDiscount = isMembershipDiscount();
-        outputView.displayReceipt(products, promotions, isMembershipDiscount, receipt);
+        Receipt receipt = new Receipt(purchasedProducts, freeGiftProducts);
+        outputView.displayReceipt(isMembershipDiscount, receipt);
     }
 
     private void calculateProduct(Entry<ProductName, Quantity> entry) {
@@ -49,55 +49,58 @@ public class CalculationController {
         int stock = quantity.getQuantity();
         PromotionProducts promotionProducts = products.getPromotionProducts();
         if (promotionProducts.isExist(productName)) {
-            calculatePromotionProduct(promotionProducts, productName, quantity, stock);
+            calculatePromotionProduct(productName, quantity, stock);
         }
         if (!promotionProducts.isExist(productName)) {
             calculateGeneralProduct(productName, quantity);
         }
     }
 
-    private int getPromotionNotPossible(Promotion promotion, Quantity productQuantity,
-                                        PromotionProduct promotionProduct) {
-        return promotion.getPromotionNotPossible(productQuantity, promotionProduct);
+    private int getPromotionNotPossible(ProductName productName) {
+        Promotion promotion = promotions.getPromotion(productName.getName());
+        Quantity purchaseQuantity = purchasedProducts.getProductQuantity(productName);
+        PromotionProduct promotionProduct = products.getPromotionProducts().getProduct(productName);
+        return promotion.getPromotionNotPossible(purchaseQuantity, promotionProduct);
     }
 
 
-    private void calculatePromotionProduct(PromotionProducts promotionProducts, ProductName productName,
-                                           Quantity quantity, int stock) {
-        PromotionProduct promotionProduct = promotionProducts.getProduct(productName);
+    private void calculatePromotionProduct(ProductName productName, Quantity quantity, int stock) {
+        PromotionProduct promotionProduct = products.getPromotionProducts().getProduct(productName);
         Promotion promotion = promotions.getPromotion(promotionProduct.getPromotion());
         if (promotion.isInvalidPromotion()) {
             return;
         }
-        checkPromotionConditions(quantity, promotion, promotionProduct, productName, stock);
+        checkPromotionConditions(quantity, productName, stock);
     }
 
-    private void checkPromotionConditions(Quantity quantity, Promotion promotion,
-                                          PromotionProduct promotionProduct, ProductName productName, int stock) {
-        checkIsBenefitAvailable(promotion, promotionProduct, productName, stock);
+    private void checkPromotionConditions(Quantity quantity, ProductName productName, int stock) {
+        stock += checkIsBenefitAvailable(productName, stock);
 
-        checkHasPromotionNotPossible(promotion, promotionProduct, productName, stock);
+        stock += checkHasPromotionNotPossible(productName, stock);
 
-        calculatorService.calculatePromotionQuantity(promotion, quantity, promotionProduct, productName, stock);
+        calculatorService.calculatePromotionQuantity(quantity, productName, stock);
     }
 
-    private void checkIsBenefitAvailable(Promotion promotion, PromotionProduct promotionProduct,
-                                         ProductName productName, int stock) {
-        if (promotion.isBenefitAvailable(promotionProduct.getQuantity(),
-                purchasedProducts.getProductQuantity(productName))) {
+    private int checkIsBenefitAvailable(ProductName productName, int stock) {
+        Promotion promotion = promotions.getPromotion(productName.getName());
+        PromotionProduct promotionProduct = products.getPromotionProducts().getProduct(productName);
+        Quantity purchaseQuantity = purchasedProducts.getProductQuantity(productName);
+        if (promotion.isBenefitAvailable(promotionProduct.getQuantity(), purchaseQuantity)) {
             String input = getBenefitDecision(promotionProduct);
-            calculatorService.processBenefitAvailableProduct(input, stock, productName);
+            stock += calculatorService.processBenefitAvailableProduct(input, stock, productName);
         }
+        return stock;
     }
 
-    private void checkHasPromotionNotPossible(Promotion promotion, PromotionProduct promotionProduct,
-                                              ProductName productName, int stock) {
-        int promotionNotPossible = getPromotionNotPossible(promotion, purchasedProducts.getProductQuantity(productName),
-                promotionProduct);
+    private int checkHasPromotionNotPossible(ProductName productName, int stock) {
+        PromotionProduct promotionProduct = products.getPromotionProducts().getProduct(productName);
+        int promotionNotPossible = getPromotionNotPossible(productName);
         if (promotionNotPossible > 0) {
             String input = getDiscountDecision(promotionProduct, promotionNotPossible);
-            calculatorService.processPromotionNotPossibleProduct(input, stock, promotionNotPossible, productName);
+            stock += calculatorService.processPromotionNotPossibleProduct(input, stock, promotionNotPossible,
+                    productName);
         }
+        return stock;
     }
 
     private void calculateGeneralProduct(ProductName productName, Quantity quantity) {

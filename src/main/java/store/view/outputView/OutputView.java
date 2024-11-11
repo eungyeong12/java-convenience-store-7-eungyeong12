@@ -1,7 +1,6 @@
 package store.view.outputView;
 
 import store.domain.product.Products;
-import store.domain.promotion.Promotions;
 import store.domain.user.Receipt;
 
 public class OutputView {
@@ -21,8 +20,7 @@ public class OutputView {
         productView.displayProducts(products);
     }
 
-    public void displayReceipt(Products products, Promotions promotions,
-                               boolean isMembershipDiscount, Receipt receipt) {
-        receiptView.displayReceipt(products, promotions, isMembershipDiscount, receipt);
+    public void displayReceipt(boolean isMembershipDiscount, Receipt receipt) {
+        receiptView.displayReceipt(isMembershipDiscount, receipt);
     }
 }

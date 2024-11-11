@@ -1,6 +1,6 @@
 package store.domain.user;
 
-import store.domain.product.Products;
+import static store.controller.ConvenienceStoreController.products;
 
 public class Receipt {
     private final PurchasedProducts purchasedProducts;
@@ -11,7 +11,7 @@ public class Receipt {
         this.freeGiftProducts = freeGiftProducts;
     }
 
-    public int getTotalPrice(Products products) {
+    public int getTotalPrice() {
         return purchasedProducts.getTotalPrice(products);
     }
 
@@ -19,7 +19,7 @@ public class Receipt {
         return purchasedProducts.getTotalQuantity();
     }
 
-    public int getTotalFreeGiftPrice(Products products) {
+    public int getTotalFreeGiftPrice() {
         return freeGiftProducts.getTotalFreeGiftPrice(products);
     }
 

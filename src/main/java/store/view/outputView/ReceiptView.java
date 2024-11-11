@@ -1,7 +1,5 @@
 package store.view.outputView;
 
-import store.domain.product.Products;
-import store.domain.promotion.Promotions;
 import store.domain.user.Receipt;
 import store.view.outputView.receipt.FreeGiftProductsView;
 import store.view.outputView.receipt.PriceView;
@@ -23,13 +21,12 @@ public class ReceiptView {
         this.priceView = priceView;
     }
 
-    public void displayReceipt(Products products, Promotions promotions,
-                               boolean isMembershipDiscount, Receipt receipt) {
+    public void displayReceipt(boolean isMembershipDiscount, Receipt receipt) {
         System.out.println(System.lineSeparator() + TITLE);
-        purchasedProductsView.displayPurchasedProducts(products, receipt);
+        purchasedProductsView.displayPurchasedProducts(receipt);
         System.out.println(FREE_GIFT_DIVIDER);
         freeGiftProductsView.displayFreeGifts(receipt);
         System.out.println(PRICE_DIVIDER);
-        priceView.displayPrice(products, promotions, isMembershipDiscount, receipt);
+        priceView.displayPrice(isMembershipDiscount, receipt);
     }
 }
