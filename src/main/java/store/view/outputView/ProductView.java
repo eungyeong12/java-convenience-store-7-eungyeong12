@@ -66,7 +66,7 @@ public class ProductView {
 
     private String getQuantity(Product product) {
         int quantity = product.getQuantity();
-        if (quantity < 0) {
+        if (quantity <= 0) {
             return OUT_OF_STOCK;
         }
         return String.format(QUANTITY_RESULT, quantity);
