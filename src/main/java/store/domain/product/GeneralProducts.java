@@ -2,8 +2,6 @@ package store.domain.product;
 
 import java.util.ArrayList;
 import java.util.List;
-import store.exception.product.ProductErrorMessage;
-import store.exception.product.ProductException;
 
 public class GeneralProducts {
     private final List<GeneralProduct> products;
@@ -23,6 +21,6 @@ public class GeneralProducts {
                 return product;
             }
         }
-        throw new ProductException(ProductErrorMessage.NOT_EXIST_PRODUCT, productName.getName());
+        return null;
     }
 }

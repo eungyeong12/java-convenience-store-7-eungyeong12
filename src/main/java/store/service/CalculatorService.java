@@ -26,9 +26,7 @@ public class CalculatorService {
     public int processPromotionNotPossibleProduct(String input, int stock, int promotionNotPossible,
                                                   ProductName productName) {
         if (input.equalsIgnoreCase(InputType.Y.name())) {
-            stock -= promotionNotPossible;
-            GeneralProduct generalProduct = products.getGeneralProducts().getProduct(productName);
-            generalProduct.decreaseStock(promotionNotPossible);
+            stock = decreaseGeneralProductStock(stock, promotionNotPossible, productName);
         }
         if (input.equalsIgnoreCase(InputType.N.name())) {
             stock -= promotionNotPossible;
@@ -44,5 +42,14 @@ public class CalculatorService {
                 promotionProduct.getQuantity());
         freeGiftProducts.increaseQuantity(productName, Quantity.of(String.valueOf(promotionQuantity)));
         promotionProduct.decreaseStock(stock);
+    }
+
+    private int decreaseGeneralProductStock(int stock, int promotionNotPossible, ProductName productName) {
+        stock -= promotionNotPossible;
+        GeneralProduct generalProduct = products.getGeneralProducts().getProduct(productName);
+        if (generalProduct != null) {
+            generalProduct.decreaseStock(promotionNotPossible);
+        }
+        return stock;
     }
 }
