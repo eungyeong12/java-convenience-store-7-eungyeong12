@@ -1,5 +1,6 @@
 package store.validator;
 
+import store.constant.InputType;
 import store.exception.validation.ValidationErrorMessage;
 import store.exception.validation.ValidationException;
 
@@ -25,7 +26,7 @@ public class Validator {
     }
 
     public static void validateInputYOrN(String input) {
-        if (!(input.equalsIgnoreCase("Y") || input.equalsIgnoreCase("N"))) {
+        if (!(input.equalsIgnoreCase(InputType.Y.name()) || input.equalsIgnoreCase(InputType.N.name()))) {
             throw new ValidationException(ValidationErrorMessage.NOT_Y_OR_N);
         }
     }
