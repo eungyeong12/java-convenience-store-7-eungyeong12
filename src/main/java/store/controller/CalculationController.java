@@ -33,11 +33,7 @@ public class CalculationController {
 
     public void calculate() {
         freeGiftProducts = new FreeGiftProducts();
-
-        for (Entry<ProductName, Quantity> entry : purchasedProducts.getProducts().entrySet()) {
-            calculateProduct(entry);
-        }
-
+        purchasedProducts.getProducts().entrySet().forEach(this::calculateProduct);
         boolean isMembershipDiscount = isMembershipDiscount();
         Receipt receipt = new Receipt(purchasedProducts, freeGiftProducts);
         outputView.displayReceipt(isMembershipDiscount, receipt);
@@ -75,9 +71,7 @@ public class CalculationController {
 
     private void checkPromotionConditions(Quantity quantity, ProductName productName, int stock) {
         stock += checkIsBenefitAvailable(productName, stock);
-
         stock += checkHasPromotionNotPossible(productName, stock);
-
         calculatorService.calculatePromotionQuantity(quantity, productName, stock);
     }
 
